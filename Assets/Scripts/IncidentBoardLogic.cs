@@ -9,6 +9,12 @@ public class IncidentBoardLogic : MonoBehaviour
     public Sprite dayMarker;
     public Sprite incidentMarker;
     public Sprite extraMarker;
+
+    [Space]
+    public float clickPointRadius;
+    public List<float> clickXCoords;
+    public List<float> clickYCoords;
+    
     
     // Start is called before the first frame update
     void Start()
