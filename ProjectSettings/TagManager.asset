@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Board
+    uniqueID: 2965672675
+    locked: 0
+  - name: CharacterCards
+    uniqueID: 315239591
+    locked: 0
+  - name: PlayedCards
+    uniqueID: 1364878887
+    locked: 0
