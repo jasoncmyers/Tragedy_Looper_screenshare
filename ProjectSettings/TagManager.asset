@@ -47,6 +47,9 @@ TagManager:
   - name: CharacterCards
     uniqueID: 315239591
     locked: 0
+  - name: Markers
+    uniqueID: 1202829323
+    locked: 0
   - name: PlayedCards
     uniqueID: 1364878887
     locked: 0

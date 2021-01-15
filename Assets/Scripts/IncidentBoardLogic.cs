@@ -22,18 +22,16 @@ public class IncidentBoardLogic : MonoBehaviour
     private int extraMarkerPosition = -1;
     private HashSet<int> incidentMarkerPositions = new HashSet<int>();
     private SpriteRenderer dayMarkerSR, loopMarkerSR, extraMarkerSR;
-
-
-
-
-
+    private class IncidentMarker {
+        public GameObject marker;
+        public int position;
+    }
+    private List<IncidentMarker> incidentMarkers = new List<IncidentMarker>();
+    
+    
     private void Awake()
     {
         SpriteRenderer[] tempSprites = GetComponentsInChildren<SpriteRenderer>();
-        foreach (var sr in tempSprites)
-        {
-            Debug.Log("Spriterender found with name " + sr.name);
-        }
         dayMarkerSR = tempSprites[1];
         dayMarkerSR.transform.position = new Vector2(clickXCoords[0], clickYCoords[0]);
         loopMarkerSR = tempSprites[2];
@@ -41,7 +39,14 @@ public class IncidentBoardLogic : MonoBehaviour
         extraMarkerSR = tempSprites[3];
         extraMarkerSR.gameObject.SetActive(false);
 
-
+        // setup the first incident marker and the list for new ones
+        IncidentMarker im = new IncidentMarker
+        {
+            marker = tempSprites[4].gameObject,
+            position = -1
+        };
+        incidentMarkers.Add(im);
+        incidentMarkers[0].marker.SetActive(false);
     }
 
 
@@ -94,7 +99,6 @@ public class IncidentBoardLogic : MonoBehaviour
 
     private void HandleCircleClick(int circleClicked)
     {
-        Debug.Log("Clicked and released inside circle " + circleClicked);
         if (circleClicked % 4 == 0) // clicked on a "day" circle
         {
             DayMarkerClick(circleClicked);
@@ -123,6 +127,27 @@ public class IncidentBoardLogic : MonoBehaviour
         //dayMarkerSR.gameObject.SetActive(true);
     }
 
+    private void IncidentMarkerClicked(int pos)
+    {
+        // if clicking an existing marker, set it inactive
+        if (incidentMarkerPositions.Contains(pos))
+        {
+            incidentMarkerPositions.Remove(pos);
+            var im = FindIncidentMarkerAtPosition(pos);
+            im.position = -1;
+            im.marker.SetActive(false);
+        }
+        // if clicking an empty space, find a free marker and place it there
+        else
+        {
+            var im = GetFreeIncidentMarker();
+            im.marker.transform.position = new Vector2(clickXCoords[1], clickYCoords[pos / 4]);
+            im.marker.SetActive(true);
+            im.position = pos;
+            incidentMarkerPositions.Add(pos);
+        }
+    }
+
     private void LoopMarkerClick(int pos)
     {
         loopMarkerPosition = pos;
@@ -130,11 +155,6 @@ public class IncidentBoardLogic : MonoBehaviour
         tempPos.x = clickXCoords[2];
         tempPos.y = clickYCoords[pos / 4];
         loopMarkerSR.transform.position = tempPos;
-    }
-
-    private void IncidentMarkerClicked(int pos)
-    {
-
     }
 
     private void ExtraGaugeClicked(int pos)
@@ -153,5 +173,36 @@ public class IncidentBoardLogic : MonoBehaviour
             extraMarkerSR.transform.position = tempPos;
             extraMarkerSR.gameObject.SetActive(true);
         }
+    }
+
+    private IncidentMarker GetFreeIncidentMarker()
+    {
+        foreach (IncidentMarker im in incidentMarkers)
+        {
+            if (im.marker.activeSelf == false)
+            {
+                im.marker.SetActive(true);
+                return im;
+            }
+        }
+        // no inactive incident markers, so make a new one.  We know index zero always exists.
+        GameObject newMarker = GameObject.Instantiate(incidentMarkers[0].marker);
+        IncidentMarker newIM = new IncidentMarker
+        {
+            marker = newMarker,
+            position = -1
+        };
+
+        incidentMarkers.Add(newIM);
+        return newIM;
+    }
+
+    private IncidentMarker FindIncidentMarkerAtPosition(int pos)
+    {
+        foreach (var im in incidentMarkers)
+        {
+            if (im.position == pos) return im;
+        }
+        return null;
     }
 }
