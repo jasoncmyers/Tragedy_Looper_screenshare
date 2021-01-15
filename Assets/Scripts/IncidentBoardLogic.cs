@@ -5,22 +5,40 @@ using UnityEngine;
 public class IncidentBoardLogic : MonoBehaviour
 {
 
-    public Sprite loopMarker;
-    public Sprite dayMarker;
-    public Sprite incidentMarker;
-    public Sprite extraMarker;
+    public Sprite loopMarkerSprite;
+    public Sprite dayMarkerSprite;
+    public Sprite incidentMarkerSprite;
+    public Sprite extraMarkerSprite;
 
     [Space]
     public float clickPointRadius;
     public List<float> clickXCoords;
     public List<float> clickYCoords;
 
-
     private int clickedCircle = -1;
     private Camera mainCam;
-    
-    
-    // Start is called before the first frame update
+    private int dayMarkerPosition = -1;
+    private int loopMarkerPositon = -1;
+    private HashSet<int> incidentMarkerPositions = new HashSet<int>();
+    private SpriteRenderer dayMarkerSR, loopMarkerSR, extraMarkerSR;
+
+
+
+
+
+    private void Awake()
+    {
+        SpriteRenderer[] tempSprites = GetComponentsInChildren<SpriteRenderer>();
+        foreach (var sr in tempSprites)
+        {
+            Debug.Log("Spriterender found with name " + sr.name);
+        }
+        dayMarkerSR = tempSprites[1];
+        dayMarkerSR.transform.position = new Vector2(clickXCoords[0], clickYCoords[0]);
+
+    }
+
+
     void Start()
     {
         mainCam = Camera.main;
@@ -44,6 +62,7 @@ public class IncidentBoardLogic : MonoBehaviour
         int clickReleaseCirlce = GetTargetCircle((Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition));
         if (clickedCircle == clickReleaseCirlce)
         {
+            clickedCircle = -1;
             HandleCircleClick(clickReleaseCirlce);
         }
     }
@@ -70,5 +89,47 @@ public class IncidentBoardLogic : MonoBehaviour
     private void HandleCircleClick(int circleClicked)
     {
         Debug.Log("Clicked and released inside circle " + circleClicked);
+        if (circleClicked % 4 == 0) // clicked on a "day" circle
+        {
+            DayMarkerClick(circleClicked);
+        }
+        else if (circleClicked % 4 == 1)
+        {
+            IncidentMarkerClicked(circleClicked);
+        }
+        else if (circleClicked % 4 == 2)
+        {
+            LoopMarkerClick(circleClicked);
+        }
+        else if (circleClicked % 4 == 3)
+        {
+            ExtraGaugeClicked(circleClicked);
+        }
+    }
+
+    private void DayMarkerClick(int pos)
+    {
+        
+        dayMarkerPosition = pos;
+        Vector2 tempPos = new Vector2();
+        tempPos.x = clickXCoords[0];
+        tempPos.y = clickYCoords[pos / 4];
+        dayMarkerSR.transform.position = tempPos;
+        //dayMarkerSR.gameObject.SetActive(true);
+    }
+
+    private void LoopMarkerClick(int pos)
+    {
+
+    }
+
+    private void IncidentMarkerClicked(int pos)
+    {
+
+    }
+
+    private void ExtraGaugeClicked(int pos)
+    {
+
     }
 }
