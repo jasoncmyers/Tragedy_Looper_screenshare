@@ -18,7 +18,8 @@ public class IncidentBoardLogic : MonoBehaviour
     private int clickedCircle = -1;
     private Camera mainCam;
     private int dayMarkerPosition = -1;
-    private int loopMarkerPositon = -1;
+    private int loopMarkerPosition = -1;
+    private int extraMarkerPosition = -1;
     private HashSet<int> incidentMarkerPositions = new HashSet<int>();
     private SpriteRenderer dayMarkerSR, loopMarkerSR, extraMarkerSR;
 
@@ -35,6 +36,11 @@ public class IncidentBoardLogic : MonoBehaviour
         }
         dayMarkerSR = tempSprites[1];
         dayMarkerSR.transform.position = new Vector2(clickXCoords[0], clickYCoords[0]);
+        loopMarkerSR = tempSprites[2];
+        loopMarkerSR.transform.position = new Vector2(clickXCoords[2], clickYCoords[0]);
+        extraMarkerSR = tempSprites[3];
+        extraMarkerSR.gameObject.SetActive(false);
+
 
     }
 
@@ -109,7 +115,6 @@ public class IncidentBoardLogic : MonoBehaviour
 
     private void DayMarkerClick(int pos)
     {
-        
         dayMarkerPosition = pos;
         Vector2 tempPos = new Vector2();
         tempPos.x = clickXCoords[0];
@@ -120,7 +125,11 @@ public class IncidentBoardLogic : MonoBehaviour
 
     private void LoopMarkerClick(int pos)
     {
-
+        loopMarkerPosition = pos;
+        Vector2 tempPos = new Vector2();
+        tempPos.x = clickXCoords[2];
+        tempPos.y = clickYCoords[pos / 4];
+        loopMarkerSR.transform.position = tempPos;
     }
 
     private void IncidentMarkerClicked(int pos)
@@ -130,6 +139,19 @@ public class IncidentBoardLogic : MonoBehaviour
 
     private void ExtraGaugeClicked(int pos)
     {
-
+        if (pos == extraMarkerPosition)
+        {
+            extraMarkerPosition = -1;
+            extraMarkerSR.gameObject.SetActive(false);
+        }
+        else
+        {
+            extraMarkerPosition = pos;
+            Vector2 tempPos = new Vector2();
+            tempPos.x = clickXCoords[3];
+            tempPos.y = clickYCoords[pos / 4];
+            extraMarkerSR.transform.position = tempPos;
+            extraMarkerSR.gameObject.SetActive(true);
+        }
     }
 }
