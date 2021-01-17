@@ -5,15 +5,10 @@ using UnityEngine;
 public class IncidentBoardLogic : MonoBehaviour
 {
 
-    public Sprite loopMarkerSprite;
-    public Sprite dayMarkerSprite;
-    public Sprite incidentMarkerSprite;
-    public Sprite extraMarkerSprite;
-
-    [Space]
-    public float clickPointRadius;
-    public List<float> clickXCoords;
-    public List<float> clickYCoords;
+    [SerializeField]
+    private float clickPointRadius;
+    public List<GameObject> markerXCoords, markerYCoords;
+    private List<float> clickXCoords, clickYCoords;
 
     private int clickedCircle = -1;
     private Camera mainCam;
@@ -31,6 +26,21 @@ public class IncidentBoardLogic : MonoBehaviour
     
     private void Awake()
     {
+        // populate the coordinate lists for the click hotspots
+        clickXCoords = new List<float>();
+        clickYCoords = new List<float>();
+        foreach (GameObject go in markerXCoords)
+        {
+            clickXCoords.Add(go.transform.position.x);
+            GameObject.Destroy(go);
+        }
+        foreach (GameObject go in markerYCoords)
+        {
+            clickYCoords.Add(go.transform.position.y);
+            GameObject.Destroy(go);
+        }
+        
+        // find and cache sprite renderers for the various markers
         SpriteRenderer[] tempSprites = GetComponentsInChildren<SpriteRenderer>();
         dayMarkerSR = tempSprites[1];
         dayMarkerSR.transform.position = new Vector2(clickXCoords[0], clickYCoords[0]);
@@ -186,7 +196,7 @@ public class IncidentBoardLogic : MonoBehaviour
             }
         }
         // no inactive incident markers, so make a new one.  We know index zero always exists.
-        GameObject newMarker = GameObject.Instantiate(incidentMarkers[0].marker);
+        GameObject newMarker = GameObject.Instantiate(incidentMarkers[0].marker, this.transform);
         IncidentMarker newIM = new IncidentMarker
         {
             marker = newMarker,
