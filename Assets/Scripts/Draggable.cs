@@ -4,30 +4,29 @@ using UnityEngine.EventSystems;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler,IEndDragHandler, IDragHandler
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private Vector2 offset;
+    Camera mainCam;
 
-    // Update is called once per frame
-    void Update()
+    void Awake()
     {
-        
+        mainCam = Camera.main;
     }
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("Begin drag!");
-    }
-
-    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
-    {
-        Debug.Log("End drag!");
+        offset = transform.position - mainCam.ScreenToWorldPoint(eventData.position);
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        Debug.Log("Dragging!");
+        //Debug.Log("Dragging!");
+        transform.position = offset + (Vector2)mainCam.ScreenToWorldPoint(eventData.position);
     }
+
+    void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+    {
+        //Debug.Log("End drag!");
+    }
+
+    
 }
