@@ -12,7 +12,12 @@ public class CharacterCardLogic : MonoBehaviour
 
     private void OnMouseOver()
     {
-        Debug.Log("MouseOver on card " + cardData?.characterName);
+        //Debug.Log("MouseOver on card " + cardData?.characterName);
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        Debug.Log("Clicked on card " + name);
     }
 
 
