@@ -1247,10 +1247,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78bcef8c37dbe364bae13d385fde3408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardData: {fileID: 0}
+  cardData: {fileID: 11400000, guid: 85374ee61344bb1498e5175dd41eedf4, type: 2}
   paranoia: 0
   goodwill: 0
   dead: 0
+  dirty: 0
 --- !u!1 &1262069014
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterCardLogic : MonoBehaviour
 {
@@ -8,16 +8,21 @@ public class CharacterCardLogic : MonoBehaviour
     public int paranoia;
     public int goodwill;
     public bool dead;
+    [SerializeField]
+    private bool dirty;
+    private Image characterPicture;
+    private Text characterName;
+    private Text characterStats;
 
 
-    private void OnMouseOver()
+
+    private void Awake()
     {
-        //Debug.Log("MouseOver on card " + cardData?.characterName);
-    }
-
-    private void OnMouseUpAsButton()
-    {
-        Debug.Log("Clicked on card " + name);
+        var temp = GetComponentsInChildren<Text>();
+        characterName = temp[0];
+        characterStats = temp[1];
+        characterPicture = GetComponentsInChildren<Image>()[1];
+        dirty = true;
     }
 
 
@@ -32,5 +37,34 @@ public class CharacterCardLogic : MonoBehaviour
         {
             transform.eulerAngles = Vector3.zero;
         }
+
+        if (dirty)
+        {
+            characterName.text = cardData.characterName;
+            characterPicture.sprite = cardData.characterPicture;
+            characterStats.text = FormatStatsText(cardData);
+            dirty = false;
+        }
+    }
+
+    private string FormatStatsText(CharacterCardData cardData)
+    {
+        StringBuilder newText = new StringBuilder("Paranoia: ", 50);
+        newText.Append(paranoia);
+        newText.Append("\n/");
+        newText.Append(cardData.paranoiaLimit);
+        newText.Append("\nGoodwill: ");
+        newText.Append(goodwill);
+        newText.Append("\n");
+        bool firstGW = true;
+        foreach (int gwTrigger in cardData.goodWillAbilityLevels)
+        {
+            if (firstGW) firstGW = false;
+            else newText.Append("   ");
+            newText.Append("/");
+            newText.Append(gwTrigger);
+        }
+
+        return newText.ToString();
     }
 }
