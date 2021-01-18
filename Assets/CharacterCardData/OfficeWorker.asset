@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02f08b055910ad24881f5849ce34a8e8, type: 3}
-  m_Name: Office Worker
+  m_Name: OfficeWorker
   m_EditorClassIdentifier: 
   characterName: Office Worker
   characterPicture: {fileID: -3608586996898994700, guid: fd7e809cff4d9e9469e79f4759964eb5,
