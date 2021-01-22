@@ -67,4 +67,12 @@ public class CharacterCardLogic : MonoBehaviour
 
         return newText.ToString();
     }
+
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("Right click on card!");
+        }
+    }
 }
