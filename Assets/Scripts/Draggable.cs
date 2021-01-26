@@ -2,16 +2,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerClickHandler
+public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler
 {
     private Vector2 offset;
     Camera mainCam;
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button != PointerEventData.InputButton.Right) return;
-        Debug.Log(eventData);
-    }
 
     void Awake()
     {

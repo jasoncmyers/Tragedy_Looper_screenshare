@@ -7,7 +7,8 @@ public class CharacterCardLogic : MonoBehaviour
     public CharacterCardData cardData;
     public int paranoia;
     public int goodwill;
-    public bool dead;
+    [SerializeField]
+    private bool dead;
     [SerializeField]
     private bool dirty;
     private Image characterPicture;
@@ -28,18 +29,20 @@ public class CharacterCardLogic : MonoBehaviour
 
     private void Update()
     {
-        if (dead && transform.eulerAngles == Vector3.zero)
-        {
-            Vector3 temp = new Vector3(0, 0, -90);
-            transform.eulerAngles = temp;
-        }
-        else if (!dead)
-        {
-            transform.eulerAngles = Vector3.zero;
-        }
-
         if (dirty)
         {
+            // handle rotation for card death
+            if (dead)
+            {
+                Vector3 temp = new Vector3(0, 0, -90);
+                transform.eulerAngles = temp;
+            }
+            else
+            {
+                transform.eulerAngles = Vector3.zero;
+            }
+
+            // update 
             characterName.text = cardData.characterName;
             characterPicture.sprite = cardData.characterPicture;
             characterStats.text = FormatStatsText(cardData);
@@ -75,4 +78,40 @@ public class CharacterCardLogic : MonoBehaviour
             Debug.Log("Right click on card!");
         }
     }
+
+    public void ChangeParanoia(int deltaValue)
+    {
+        SetParanoia(paranoia + deltaValue);
+    }
+
+    public void ChangeGoodwill(int deltaValue)
+    {
+        SetGoodwill(goodwill + deltaValue);
+    }
+
+    public void SetParanoia(int value)
+    {
+        paranoia = (value < 0) ? 0 : value;
+        dirty = true;
+    }
+
+    public void SetGoodwill(int value)
+    {
+        goodwill = (value < 0) ? 0 : value;
+        dirty = true;
+    }
+
+    public void ToggleDead()
+    {
+        dead = !dead;
+        dirty = true;
+    }
+
+    // TODO: card pooling is probably a good best practice.  But for now, they won't be created/destroyed often
+    public void RemoveCard()
+    {
+        GameObject.Destroy(gameObject);
+    }
+
+
 }
