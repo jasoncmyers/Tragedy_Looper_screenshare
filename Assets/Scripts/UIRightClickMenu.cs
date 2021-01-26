@@ -22,8 +22,3 @@ public class UIRightClickMenu : MonoBehaviour, IPointerClickHandler
         MenuToLoad.SetActive(true);
     }
 }
-
-public interface IAssociableMenu
-{
-    void AssociateWithGameobject(GameObject go);
-}
