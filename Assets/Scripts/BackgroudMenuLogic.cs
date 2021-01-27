@@ -10,7 +10,7 @@ public class BackgroudMenuLogic : MonoBehaviour, IAssociableMenu
 
     public List<CharacterCardData> characterCards;
     [SerializeField]
-    private GameObject buttonTemplate, contentList, cardTemplate, cardCanvas, cardRightClickMenu, MMCardTemplate, IntrigueTokenTemplate;
+    private GameObject buttonTemplate, contentList, cardTemplate, cardCanvas, cardRightClickMenu, MMCardTemplate, MMCardCanvas, intrigueTokenTemplate, intrigueTokenCanvas;
     
 
 
@@ -68,6 +68,20 @@ public class BackgroudMenuLogic : MonoBehaviour, IAssociableMenu
         newCard.cardData = cardData;
         newCardGO.GetComponent<UIRightClickMenu>().MenuToLoad = cardRightClickMenu;
         newCardGO.SetActive(true);
+    }
+
+    public void CreateMMCard()
+    {
+        GameObject newCardGO = GameObject.Instantiate(MMCardTemplate, MMCardCanvas.transform);
+        newCardGO.SetActive(true);
+        gameObject.SetActive(false);
+    }
+
+    public void CreateIntrigueToken()
+    {
+        GameObject newIntrigueToken = GameObject.Instantiate(intrigueTokenTemplate, intrigueTokenCanvas.transform);
+        newIntrigueToken.SetActive(true);
+        gameObject.SetActive(false);
     }
 
 }
