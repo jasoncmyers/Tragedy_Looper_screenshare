@@ -12,18 +12,6 @@ public class CardMenuLogic : MonoBehaviour, IAssociableMenu
         AssociateWithCard(go.GetComponent<CharacterCardLogic>());
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void AssociateWithCard(CharacterCardLogic newCard)
     {
         associatedCard = newCard;
