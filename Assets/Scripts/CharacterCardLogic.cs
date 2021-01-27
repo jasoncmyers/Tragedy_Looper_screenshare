@@ -34,7 +34,7 @@ public class CharacterCardLogic : MonoBehaviour
             // handle rotation for card death
             if (dead)
             {
-                Vector3 temp = new Vector3(0, 0, -90);
+                Vector3 temp = new Vector3(0, 0, 90);
                 transform.eulerAngles = temp;
             }
             else
