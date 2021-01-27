@@ -5,12 +5,12 @@ using UnityEngine.UI;
 public class CharacterCardLogic : MonoBehaviour
 {
     public CharacterCardData cardData;
-    public int paranoia;
-    public int goodwill;
     [SerializeField]
     private bool dead;
     [SerializeField]
     private bool dirty;
+    private int paranoia;
+    private int goodwill;
     private Image characterPicture;
     private Text characterName;
     private Text characterStats;

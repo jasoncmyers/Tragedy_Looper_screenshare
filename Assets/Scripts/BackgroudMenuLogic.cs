@@ -10,16 +10,21 @@ public class BackgroudMenuLogic : MonoBehaviour, IAssociableMenu
 
     public List<CharacterCardData> characterCards;
     [SerializeField]
-    private GameObject buttonTemplate, contentList;
+    private GameObject buttonTemplate, contentList, cardTemplate, cardCanvas, cardRightClickMenu, MMCardTemplate, IntrigueTokenTemplate;
     
 
 
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 15; i++)
+        /*for (int i = 0; i < 15; i++)
         {
             GenerateButton("testButton" + i);
+        } */
+        foreach (var c in characterCards)
+        {
+            //CreateCharacterCard(c);
+            GenerateCharacterButton(c);
         }
     }
 
@@ -38,14 +43,31 @@ public class BackgroudMenuLogic : MonoBehaviour, IAssociableMenu
         
     }
 
-    private void GenerateButton(string text)
+    private void GenerateCharacterButton(CharacterCardData cardData)
     {
         GameObject newButtonGO = Instantiate(buttonTemplate) as GameObject;
         Button newButton = newButtonGO.GetComponent<Button>();
-        newButton.GetComponentInChildren<Text>().text = text;
+        newButton.GetComponentInChildren<Text>().text = cardData.characterName;
+
+        // newButton.onClick.AddListener(() => Debug.Log("Clicked " + cardData.characterName));
+        newButton.onClick.AddListener(() =>
+        {
+            CreateCharacterCard(cardData);
+            gameObject.SetActive(false);
+        });
 
         newButtonGO.transform.SetParent(contentList.transform, false);
         newButtonGO.SetActive(true);
+    }
+
+    // TODO: pooling here too.  In practice, creation should be rare so it's probably ok with Instantiate()
+    private void CreateCharacterCard(CharacterCardData cardData)
+    {
+        GameObject newCardGO = GameObject.Instantiate(cardTemplate, cardCanvas.transform);
+        var newCard = newCardGO.GetComponent<CharacterCardLogic>();
+        newCard.cardData = cardData;
+        newCardGO.GetComponent<UIRightClickMenu>().MenuToLoad = cardRightClickMenu;
+        newCardGO.SetActive(true);
     }
 
 }
