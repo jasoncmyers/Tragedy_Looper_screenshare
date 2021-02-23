@@ -11,6 +11,7 @@ public class BackgroudMenuLogic : MonoBehaviour, IAssociableMenu
     public List<CharacterCardData> characterCards;
     [SerializeField]
     private GameObject buttonTemplate, contentList, cardTemplate, cardCanvas, cardRightClickMenu, MMCardTemplate, MMCardCanvas, intrigueTokenTemplate, intrigueTokenCanvas;
+    public GameObject exitButton;
     
 
 
@@ -28,20 +29,22 @@ public class BackgroudMenuLogic : MonoBehaviour, IAssociableMenu
         }
     }
 
+    void OnEnable()
+    {
+        exitButton?.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        exitButton?.SetActive(false);
+    }
+
     // only one background menu, so no need to actually associate anything
     public void AssociateWithGameobject(GameObject go)
     {
         return;
     }
 
-
-    
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void GenerateCharacterButton(CharacterCardData cardData)
     {
@@ -82,6 +85,11 @@ public class BackgroudMenuLogic : MonoBehaviour, IAssociableMenu
         GameObject newIntrigueToken = GameObject.Instantiate(intrigueTokenTemplate, intrigueTokenCanvas.transform);
         newIntrigueToken.SetActive(true);
         gameObject.SetActive(false);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit(0);
     }
 
 }
