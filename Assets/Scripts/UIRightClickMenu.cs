@@ -12,7 +12,11 @@ public class UIRightClickMenu : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Right) return;
+        if (eventData.button != PointerEventData.InputButton.Right 
+            && Input.touchCount < 2)
+        {
+            return;
+        }
         
         var menuLogic = MenuToLoad.GetComponent<IAssociableMenu>();
         if (menuLogic == null) return;
